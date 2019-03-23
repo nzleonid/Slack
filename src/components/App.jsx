@@ -1,13 +1,16 @@
 import React from 'react';
+import InputMessage from './InputMessage';
+import RenderMessages from './RenderMessages';
+import Message from './Message';
 
-const App = ({ gon: { channels } }) => (
+const App = ({ gon }) => (
   <div className="h-100">
     <div className="row">
       <div className="col-3">
         <h3>Channels</h3>
         <ul className="list-group">
           {
-          channels.map(({ id, name }) => (
+          gon.channels.map(({ id, name }) => (
             <li className="list-group-item" key={id}>
               {name}
             </li>
@@ -17,15 +20,11 @@ const App = ({ gon: { channels } }) => (
       </div>
       <div className="col">
         <h3>Chat</h3>
-        <div className="p-2 h-100 mh-100 overflow-auto border border-dark" />
-        <div className="form-group">
-          <div className="input-group">
-            <input name="text" type="text" className="form-control" placeholder="message..." />
-            <div className="input-group-append">
-              <button type="submit" className="btn btn-dark">Send</button>
-            </div>
-          </div>
+        <div className="p-2 h-100 mh-100 overflow-auto border border-dark">
+          {gon.messages.map(message => <Message key={message.id} message={message} />)}
+          <RenderMessages />
         </div>
+        <InputMessage />
       </div>
     </div>
   </div>
