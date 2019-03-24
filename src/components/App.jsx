@@ -2,9 +2,11 @@ import React from 'react';
 import InputMessage from './InputMessage';
 import RenderMessages from './RenderMessages';
 import Message from './Message';
+import AlertError from './AlertError';
 
 const App = ({ gon }) => (
   <div className="h-100">
+    <AlertError />
     <div className="row">
       <div className="col-3">
         <h3>Channels</h3>
@@ -20,7 +22,7 @@ const App = ({ gon }) => (
       </div>
       <div className="col">
         <h3>Chat</h3>
-        <div className="p-2 h-100 mh-100 overflow-auto border border-dark">
+        <div className="overflow-auto border border-dark" style={{ height: '500px' }}>
           {gon.messages.map(message => <Message key={message.id} message={message} />)}
           <RenderMessages />
         </div>
