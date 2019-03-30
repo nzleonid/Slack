@@ -6,13 +6,16 @@ export const addMessageSuccess = createAction('TASK_REMOVE_SUCCESS');
 export const addMessageFailure = createAction('TASK_REMOVE_FAILURE');
 
 export const addMessage = createAction('MESSAGE_ADD');
-export const sendMessage = ({ data }) => async (dispatch) => {
+export const sendMessage = (data, currentChannelId, reset) => async (dispatch) => {
   dispatch(addMessageRequest());
   try {
-    await axios.post('/api/v1/channels/1/messages', { data });
+    await axios.post(`/api/v1/channels/${currentChannelId}/messages`, { data });
     dispatch(addMessageSuccess());
+    reset();
   } catch (e) {
     dispatch(addMessageFailure());
     throw e;
   }
 };
+
+export const changeChannel = createAction('CHANNEL_CHANGE');

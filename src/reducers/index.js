@@ -21,8 +21,15 @@ const messages = handleActions({
   },
 }, []);
 
+const currentChannelId = handleActions({
+  [actions.changeChannel](state, { payload: { id } }) {
+    return id;
+  },
+}, 1);
+
 export default combineReducers({
   messages,
   addMessageState,
+  currentChannelId,
   form: formReducer,
 });

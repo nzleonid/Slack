@@ -16,7 +16,7 @@ class RenderMessages extends React.Component {
     const { messages } = this.props;
     return (
       <>
-        {messages.map(message => <Message key={message.id} message={message} />)}
+        <Message messages={messages} />
       </>
     );
   }

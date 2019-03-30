@@ -3,6 +3,7 @@ import InputMessage from './InputMessage';
 import RenderMessages from './RenderMessages';
 import Message from './Message';
 import AlertError from './AlertError';
+import ListChanels from './ListChanels';
 
 const App = ({ gon }) => (
   <div className="h-100">
@@ -10,20 +11,12 @@ const App = ({ gon }) => (
     <div className="row">
       <div className="col-3">
         <h3>Channels</h3>
-        <ul className="list-group">
-          {
-          gon.channels.map(({ id, name }) => (
-            <li className="list-group-item" key={id}>
-              {name}
-            </li>
-          ))
-          }
-        </ul>
+        <ListChanels channels={gon.channels} />
       </div>
       <div className="col">
         <h3>Chat</h3>
         <div className="overflow-auto border border-dark" style={{ height: '500px' }}>
-          {gon.messages.map(message => <Message key={message.id} message={message} />)}
+          <Message messages={gon.messages} />
           <RenderMessages />
         </div>
         <InputMessage />
