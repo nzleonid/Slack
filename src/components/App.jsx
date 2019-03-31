@@ -4,6 +4,7 @@ import RenderMessages from './RenderMessages';
 import Message from './Message';
 import AlertError from './AlertError';
 import ListChanels from './ListChanels';
+import NewChannel from './NewChannel';
 
 const App = ({ gon }) => (
   <div className="h-100">
@@ -12,6 +13,7 @@ const App = ({ gon }) => (
       <div className="col-3">
         <h3>Channels</h3>
         <ListChanels channels={gon.channels} />
+        <NewChannel />
       </div>
       <div className="col">
         <h3>Chat</h3>

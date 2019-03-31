@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import * as actions from '../actions';
 import Message from './Message';
 
 const mapStateToProps = ({ messages }) => {
@@ -9,7 +8,7 @@ const mapStateToProps = ({ messages }) => {
   };
   return props;
 };
-@connect(mapStateToProps, actions)
+@connect(mapStateToProps)
 
 class RenderMessages extends React.Component {
   render() {

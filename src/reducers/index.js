@@ -15,6 +15,18 @@ const addMessageState = handleActions({
   },
 }, 'none');
 
+const createChannelState = handleActions({
+  [actions.createChannelRequest]() {
+    return 'requested';
+  },
+  [actions.createChannelFailure]() {
+    return 'failed';
+  },
+  [actions.createChannelSuccess]() {
+    return 'finished';
+  },
+}, 'none');
+
 const messages = handleActions({
   [actions.addMessage](state, { payload: { attributes } }) {
     return [...state, attributes];
@@ -27,9 +39,17 @@ const currentChannelId = handleActions({
   },
 }, 1);
 
+const newChannels = handleActions({
+  [actions.addChannel](state, { payload: { attributes } }) {
+    return [...state, attributes];
+  },
+}, []);
+
 export default combineReducers({
   messages,
   addMessageState,
+  createChannelState,
   currentChannelId,
+  newChannels,
   form: formReducer,
 });
