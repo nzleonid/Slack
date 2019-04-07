@@ -1,12 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import cn from 'classnames';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons';
 import * as actions from '../actions';
 
-const mapStateToProps = ({ currentChannelId, newChannels }) => {
+const mapStateToProps = ({ currentChannelId }) => {
   const props = {
     currentChannelId,
-    newChannels,
   };
   return props;
 };
@@ -18,8 +19,33 @@ class ListChanels extends React.Component {
     changeChannel({ id });
   }
 
+  deleteConfirmation = (id, name) => () => {
+    const { modalOpen } = this.props;
+    modalOpen({ show: 'delete', id, name });
+  }
+
+  renameConfirmation = (id, name) => () => {
+    const { modalOpen } = this.props;
+    modalOpen({ show: 'rename', id, name });
+  }
+
+  renderIcon = (id, name) => (
+      <>
+        <FontAwesomeIcon
+          icon={faTrashAlt}
+          className="float-right ml-2"
+          onClick={this.deleteConfirmation(id, name)}
+        />
+        <FontAwesomeIcon
+          className="float-right"
+          icon={faEdit}
+          onClick={this.renameConfirmation(id, name)}
+        />
+      </>
+  );
+
   render() {
-    const { currentChannelId, channels, newChannels } = this.props;
+    const { currentChannelId, channels } = this.props;
     const className = channelsId => cn({
       'list-group-item': true,
       'list-group-item-dark': true,
@@ -28,11 +54,11 @@ class ListChanels extends React.Component {
     });
     return (
       <div className="list-group" id="myList" role="tablist">
-        {channels.map(({ id, name }) => (
-          <a className={className(id)} key={id} href={`#${name}`} role="tab" onClick={this.changeChannel(id)}>{name}</a>
-        ))}
-        {newChannels.map(({ id, name }) => (
-          <a className={className(id)} key={id} href={`#${name}`} role="tab" onClick={this.changeChannel(id)}>{name}</a>
+        {channels.map(({ id, name, removable }) => (
+          <a className={className(id)} key={id} href={`#${name}`} role="tab" onClick={this.changeChannel(id)}>
+            {name}
+            {removable ? this.renderIcon(id, name) : null}
+          </a>
         ))}
       </div>
     );

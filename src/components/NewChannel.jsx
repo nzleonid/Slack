@@ -14,13 +14,13 @@ const mapStateToProps = ({ currentChannelId }) => {
 
 class NewChannel extends React.Component {
   addChannel = (value) => {
-    const { reset, createChannel } = this.props;
+    const { reset, addChannelServer } = this.props;
     const data = {
       attributes: {
         name: value.text,
       },
     };
-    createChannel(data, reset);
+    addChannelServer(data, reset);
   }
 
   render() {

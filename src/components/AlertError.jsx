@@ -2,9 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
-const mapStateToProps = ({ addMessageState }) => {
+const mapStateToProps = ({ requestState }) => {
   const props = {
-    addMessageState,
+    requestState,
   };
   return props;
 };
@@ -12,8 +12,8 @@ const mapStateToProps = ({ addMessageState }) => {
 
 class AlertError extends React.Component {
   render() {
-    const { addMessageState } = this.props;
-    if (addMessageState !== 'failed') {
+    const { requestState } = this.props;
+    if (requestState !== 'failed') {
       return null;
     }
     return (

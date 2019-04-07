@@ -3,26 +3,14 @@ import { handleActions } from 'redux-actions';
 import { reducer as formReducer } from 'redux-form';
 import * as actions from '../actions';
 
-const addMessageState = handleActions({
-  [actions.addMessageRequest]() {
+const requestState = handleActions({
+  [actions.request]() {
     return 'requested';
   },
-  [actions.addMessageFailure]() {
+  [actions.failure]() {
     return 'failed';
   },
-  [actions.addMessageSuccess]() {
-    return 'finished';
-  },
-}, 'none');
-
-const createChannelState = handleActions({
-  [actions.createChannelRequest]() {
-    return 'requested';
-  },
-  [actions.createChannelFailure]() {
-    return 'failed';
-  },
-  [actions.createChannelSuccess]() {
+  [actions.success]() {
     return 'finished';
   },
 }, 'none');
@@ -43,13 +31,27 @@ const newChannels = handleActions({
   [actions.addChannel](state, { payload: { attributes } }) {
     return [...state, attributes];
   },
+  [actions.deleteChannel](state, { payload: { id } }) {
+    const newChannelList = state.filter(channel => channel.id !== id);
+    return newChannelList;
+  },
+  [actions.renameChannel](state, { payload: { attributes } }) {
+    const rename = state.map(channel => (channel.id === attributes.id ? attributes : channel));
+    return rename;
+  },
 }, []);
+
+const modal = handleActions({
+  [actions.modalOpen](state, { payload: { id, name, show } }) {
+    return { id, name, show };
+  },
+}, {});
 
 export default combineReducers({
   messages,
-  addMessageState,
-  createChannelState,
+  requestState,
   currentChannelId,
   newChannels,
+  modal,
   form: formReducer,
 });

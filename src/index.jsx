@@ -35,6 +35,8 @@ const store = createStore(
 const socket = io();
 socket.on('newMessage', ({ data }) => store.dispatch(actions.addMessage(data)));
 socket.on('newChannel', ({ data }) => store.dispatch(actions.addChannel(data)));
+socket.on('removeChannel', ({ data }) => store.dispatch(actions.deleteChannel(data)));
+socket.on('renameChannel', ({ data }) => store.dispatch(actions.renameChannel(data)));
 
 if (!cookies.get('name')) {
   cookies.set('name', faker.name.findName());

@@ -16,7 +16,7 @@ const mapStateToProps = ({ currentChannelId }) => {
 
 class InputMessage extends React.Component {
   sendMessage = username => (value) => {
-    const { reset, sendMessage, currentChannelId } = this.props;
+    const { reset, addMessageServer, currentChannelId } = this.props;
     const data = {
       attributes: {
         id: _.uniqueId(),
@@ -24,7 +24,7 @@ class InputMessage extends React.Component {
         username,
       },
     };
-    sendMessage(data, currentChannelId, reset);
+    addMessageServer(data, currentChannelId, reset);
   }
 
   render() {
