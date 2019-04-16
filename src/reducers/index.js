@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import { handleActions } from 'redux-actions';
 import { reducer as formReducer } from 'redux-form';
+import _ from 'lodash';
 import * as actions from '../actions';
 
 const requestState = handleActions({
@@ -17,9 +18,20 @@ const requestState = handleActions({
 
 const messages = handleActions({
   [actions.addMessage](state, { payload: { attributes } }) {
-    return [...state, attributes];
+    const messageId = attributes.id;
+    return {
+      byId: { ...state.byId, [messageId]: attributes },
+      allIds: [...state.allIds, messageId],
+    };
   },
-}, []);
+  [actions.deleteChannel](state, { payload: { id } }) {
+    const { byId, allIds } = state;
+    return {
+      byId: _.omit(byId, id),
+      allIds: _.without(allIds, id),
+    };
+  },
+}, { byId: {}, allIds: [] });
 
 const currentChannelId = handleActions({
   [actions.changeChannel](state, { payload: { id } }) {

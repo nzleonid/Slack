@@ -1,7 +1,6 @@
 import React from 'react';
 import InputMessage from './InputMessage';
-import RenderMessages from './RenderMessages';
-import Message from './Message';
+import Messages from './Messages';
 import AlertError from './AlertError';
 import ListChanels from './ListChanels';
 import NewChannel from './NewChannel';
@@ -24,8 +23,7 @@ const App = ({ gon }) => (
       <div className="col">
         <h3>Chat</h3>
         <div className="overflow-auto border border-dark" style={{ height: '500px' }}>
-          <Message messages={gon.messages} />
-          <RenderMessages />
+          <Messages messagesFromServer={gon.messages} />
         </div>
         <InputMessage />
       </div>
