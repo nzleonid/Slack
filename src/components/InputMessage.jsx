@@ -15,8 +15,8 @@ const mapStateToProps = ({ currentChannelId }) => {
 @reduxForm({ form: 'InputMessage' })
 
 class InputMessage extends React.Component {
-  sendMessage = username => (value) => {
-    const { reset, addMessageServer, currentChannelId } = this.props;
+  sendMessage = username => async (value) => {
+    const { reset, addMessageToServer, currentChannelId } = this.props;
     const data = {
       attributes: {
         id: _.uniqueId(),
@@ -24,7 +24,8 @@ class InputMessage extends React.Component {
         username,
       },
     };
-    addMessageServer(data, currentChannelId, reset);
+    await addMessageToServer(data, currentChannelId);
+    reset();
   }
 
   render() {
@@ -37,7 +38,15 @@ class InputMessage extends React.Component {
           <form onSubmit={handleSubmit(this.sendMessage(username))}>
             <div className="form-group">
               <div className="input-group">
-                <Field name="text" className="form-control" required disabled={submitting} component="input" type="text" placeholder="message..." />
+                <Field
+                  name="text"
+                  className="form-control"
+                  required
+                  disabled={submitting}
+                  component="input"
+                  type="text"
+                  placeholder="message..."
+                />
                 <div className="input-group-append">
                   <button type="submit" className="btn btn-dark" disabled={pristine || submitting}>Send</button>
                 </div>

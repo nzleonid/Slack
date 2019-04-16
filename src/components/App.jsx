@@ -2,9 +2,8 @@ import React from 'react';
 import InputMessage from './InputMessage';
 import Messages from './Messages';
 import AlertError from './AlertError';
-import ListChanels from './ListChanels';
+import Channels from './Channels';
 import NewChannel from './NewChannel';
-import RenderChannels from './RenderChannels';
 import ModalDeleteChannel from './ModalDeleteChannel';
 import ModalRenameChannel from './ModalRenameChannel';
 
@@ -16,8 +15,7 @@ const App = ({ gon }) => (
     <div className="row">
       <div className="col-3">
         <h3>Channels</h3>
-        <ListChanels channels={gon.channels} />
-        <RenderChannels />
+        <Channels channelsFromServer={gon.channels} />
         <NewChannel />
       </div>
       <div className="col">

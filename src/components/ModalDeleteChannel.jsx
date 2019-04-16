@@ -17,9 +17,9 @@ class ModalDeleteChannel extends React.Component {
     modalOpen({ show: false });
   }
 
-  deleteChannel = () => {
-    const { modal, modalOpen, deleteChannelServer } = this.props;
-    deleteChannelServer(modal.id);
+  deleteChannel = async () => {
+    const { modal, modalOpen, deleteChannelToServer } = this.props;
+    await deleteChannelToServer(modal.id);
     modalOpen({ show: false });
   }
 

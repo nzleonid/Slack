@@ -19,14 +19,14 @@ class ModalDeleteChannel extends React.Component {
     modalOpen({ show: false });
   }
 
-  renameChannel = (value) => {
-    const { modal, modalOpen, renameChannelServer } = this.props;
+  renameChannel = async (value) => {
+    const { modal, modalOpen, renameChannelToServer } = this.props;
     const data = {
       attributes: {
         name: value.text,
       },
     };
-    renameChannelServer(modal.id, data);
+    await renameChannelToServer(modal.id, data);
     modalOpen({ show: false });
   }
 

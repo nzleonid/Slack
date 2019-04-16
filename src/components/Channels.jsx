@@ -5,15 +5,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons';
 import * as actions from '../actions';
 
-const mapStateToProps = ({ currentChannelId }) => {
+const mapStateToProps = ({ currentChannelId, channels }) => {
+  const { byId, allIds } = channels;
+  const currentChannels = allIds.map(id => byId[id]);
   const props = {
     currentChannelId,
+    currentChannels,
   };
   return props;
 };
 @connect(mapStateToProps, actions)
 
-class ListChanels extends React.Component {
+class Channels extends React.Component {
   changeChannel = id => () => {
     const { changeChannel } = this.props;
     changeChannel({ id });
@@ -44,25 +47,30 @@ class ListChanels extends React.Component {
       </>
   );
 
-  render() {
-    const { currentChannelId, channels } = this.props;
+  renderChannels = (channels, currentChannelId) => {
     const className = channelsId => cn({
       'list-group-item': true,
       'list-group-item-dark': true,
       'list-group-item-action': true,
       active: channelsId === currentChannelId,
     });
+    return channels.map(({ id, name, removable }) => (
+      <a className={className(id)} key={id} href={`#${name}`} role="tab" onClick={this.changeChannel(id)}>
+        {name}
+        {removable && this.renderIcon(id, name)}
+      </a>
+    ));
+  }
+
+  render() {
+    const { currentChannelId, channelsFromServer, currentChannels } = this.props;
     return (
       <div className="list-group" id="myList" role="tablist">
-        {channels.map(({ id, name, removable }) => (
-          <a className={className(id)} key={id} href={`#${name}`} role="tab" onClick={this.changeChannel(id)}>
-            {name}
-            {removable ? this.renderIcon(id, name) : null}
-          </a>
-        ))}
+        {this.renderChannels(channelsFromServer, currentChannelId)}
+        {this.renderChannels(currentChannels, currentChannelId)}
       </div>
     );
   }
 }
 
-export default ListChanels;
+export default Channels;

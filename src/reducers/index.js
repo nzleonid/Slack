@@ -5,13 +5,22 @@ import _ from 'lodash';
 import * as actions from '../actions';
 
 const requestState = handleActions({
-  [actions.request]() {
+  [actions.addMessageRequest]() {
     return 'requested';
   },
-  [actions.failure]() {
+  [actions.addMessageFailure]() {
     return 'failed';
   },
-  [actions.success]() {
+  [actions.addMessageSuccess]() {
+    return 'finished';
+  },
+  [actions.channelEditingRequest]() {
+    return 'requested';
+  },
+  [actions.channelEditingFailure]() {
+    return 'failed';
+  },
+  [actions.channelEditingSuccess]() {
     return 'finished';
   },
 }, 'none');
@@ -39,19 +48,31 @@ const currentChannelId = handleActions({
   },
 }, 1);
 
-const newChannels = handleActions({
+const channels = handleActions({
   [actions.addChannel](state, { payload: { attributes } }) {
-    return [...state, attributes];
+    const channelId = attributes.id;
+    return {
+      byId: { ...state.byId, [channelId]: attributes },
+      allIds: [...state.allIds, channelId],
+    };
   },
   [actions.deleteChannel](state, { payload: { id } }) {
-    const newChannelList = state.filter(channel => channel.id !== id);
-    return newChannelList;
+    const { byId, allIds } = state;
+    return {
+      byId: _.omitBy(byId, id),
+      allIds: allIds.filter(currentId => currentId !== id),
+    };
   },
   [actions.renameChannel](state, { payload: { attributes } }) {
-    const rename = state.map(channel => (channel.id === attributes.id ? attributes : channel));
-    return rename;
+    const { byId, allIds } = state;
+    const { id, name } = attributes;
+    const renameChannel = { ...byId[id], name };
+    return {
+      byId: { ...byId, [id]: renameChannel },
+      allIds,
+    };
   },
-}, []);
+}, { byId: {}, allIds: [] });
 
 const modal = handleActions({
   [actions.modalOpen](state, { payload: { id, name, show } }) {
@@ -63,7 +84,7 @@ export default combineReducers({
   messages,
   requestState,
   currentChannelId,
-  newChannels,
+  channels,
   modal,
   form: formReducer,
 });
