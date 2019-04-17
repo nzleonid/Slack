@@ -7,7 +7,7 @@ import NewChannel from './NewChannel';
 import ModalDeleteChannel from './ModalDeleteChannel';
 import ModalRenameChannel from './ModalRenameChannel';
 
-const App = ({ gon }) => (
+const App = () => (
   <div className="h-100">
     <AlertError />
     <ModalDeleteChannel />
@@ -15,13 +15,13 @@ const App = ({ gon }) => (
     <div className="row">
       <div className="col-3">
         <h3>Channels</h3>
-        <Channels channelsFromServer={gon.channels} />
+        <Channels />
         <NewChannel />
       </div>
       <div className="col">
         <h3>Chat</h3>
         <div className="overflow-auto border border-dark" style={{ height: '500px' }}>
-          <Messages messagesFromServer={gon.messages} />
+          <Messages />
         </div>
         <InputMessage />
       </div>

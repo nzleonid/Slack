@@ -10,6 +10,7 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { createStore, applyMiddleware, compose } from 'redux';
 import io from 'socket.io-client';
+import normalizingState from './normalizingState';
 import reducers from './reducers';
 import App from './components/App';
 import * as actions from './actions';
@@ -24,9 +25,14 @@ const ext = window.__REDUX_DEVTOOLS_EXTENSION__;
 const devtoolMiddleware = ext && ext();
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 /* eslint-enable */
-
+const channels = normalizingState(gon.channels);
+const messages = normalizingState(gon.messages);
 const store = createStore(
   reducers,
+  {
+    channels,
+    messages,
+  },
   composeEnhancers(
     applyMiddleware(thunk),
   ),
@@ -44,7 +50,7 @@ if (!cookies.get('name')) {
 render(
   <Provider store={store}>
     <UsernameContext.Provider value={cookies.get('name')}>
-      <App gon={gon} />
+      <App />
     </UsernameContext.Provider>
   </Provider>,
   document.getElementById('chat'),

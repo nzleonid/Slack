@@ -35,9 +35,10 @@ const messages = handleActions({
   },
   [actions.deleteChannel](state, { payload: { id } }) {
     const { byId, allIds } = state;
+    const currentMessage = _.omitBy(byId, (message => message.channelId === id));
     return {
-      byId: _.omit(byId, id),
-      allIds: _.without(allIds, id),
+      byId: currentMessage,
+      allIds: allIds.filter(messageId => Object.keys(currentMessage).includes(String(messageId))),
     };
   },
 }, { byId: {}, allIds: [] });

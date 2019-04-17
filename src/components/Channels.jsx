@@ -7,10 +7,9 @@ import * as actions from '../actions';
 
 const mapStateToProps = ({ currentChannelId, channels }) => {
   const { byId, allIds } = channels;
-  const currentChannels = allIds.map(id => byId[id]);
   const props = {
     currentChannelId,
-    currentChannels,
+    channels: allIds.map(id => byId[id]),
   };
   return props;
 };
@@ -63,11 +62,10 @@ class Channels extends React.Component {
   }
 
   render() {
-    const { currentChannelId, channelsFromServer, currentChannels } = this.props;
+    const { currentChannelId, channels } = this.props;
     return (
       <div className="list-group" id="myList" role="tablist">
-        {this.renderChannels(channelsFromServer, currentChannelId)}
-        {this.renderChannels(currentChannels, currentChannelId)}
+        {this.renderChannels(channels, currentChannelId)}
       </div>
     );
   }

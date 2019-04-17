@@ -4,10 +4,9 @@ import cn from 'classnames';
 
 const mapStateToProps = ({ currentChannelId, messages }) => {
   const { byId, allIds } = messages;
-  const currentMessages = allIds.map(id => byId[id]);
   const props = {
     currentChannelId,
-    currentMessages,
+    messages: allIds.map(id => byId[id]),
   };
   return props;
 };
@@ -28,11 +27,10 @@ class Message extends React.Component {
   }
 
   render() {
-    const { currentMessages, messagesFromServer, currentChannelId } = this.props;
+    const { messages, currentChannelId } = this.props;
     return (
       <div className="tab-content">
-        {this.renderMessages(messagesFromServer, currentChannelId)}
-        {this.renderMessages(currentMessages, currentChannelId)}
+        {this.renderMessages(messages, currentChannelId)}
       </div>
     );
   }
