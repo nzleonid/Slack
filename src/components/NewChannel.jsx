@@ -1,7 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
+import { Form, InputGroup, Button } from 'react-bootstrap';
 import * as actions from '../actions';
+import FormControlComponent from './FormControlComponent';
+
 
 const mapStateToProps = ({ currentChannelId }) => {
   const props = {
@@ -26,19 +29,30 @@ class NewChannel extends React.Component {
 
   render() {
     const {
-      submitting, pristine, handleSubmit,
+      submitting, pristine, handleSubmit, submitFailed,
     } = this.props;
     return (
-      <form onSubmit={handleSubmit(this.addChannel)}>
-        <div className="form-group mt-3">
-          <div className="input-group">
-            <Field name="text" className="form-control" required disabled={submitting} component="input" type="text" placeholder="channel name" />
-            <div className="input-group-append">
-              <button type="submit" className="btn btn-dark" disabled={pristine || submitting}>Add</button>
-            </div>
-          </div>
-        </div>
-      </form>
+      <Form onSubmit={handleSubmit(this.addChannel)}>
+        <InputGroup className="mt-3">
+          <Field
+            name="text"
+            className="form-control"
+            required
+            disabled={submitting}
+            isInvalid={submitFailed}
+            component={FormControlComponent}
+            type="text"
+            placeholder="channel name"
+            autoComplete="off"
+          />
+          <InputGroup.Append>
+            <Button type="submit" className="btn btn-dark" disabled={pristine || submitting}>Add</Button>
+          </InputGroup.Append>
+          <Form.Control.Feedback type="invalid">
+            Network error
+          </Form.Control.Feedback>
+        </InputGroup>
+      </Form>
     );
   }
 }

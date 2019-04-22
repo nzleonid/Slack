@@ -1,12 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import {
-  Form, InputGroup, Button, FormControl,
-} from 'react-bootstrap';
+import { Form, InputGroup, Button } from 'react-bootstrap';
 import _ from 'lodash';
 import * as actions from '../actions';
 import UsernameContext from '../UsernameContext';
+import FormControlComponent from './FormControlComponent';
 
 
 const mapStateToProps = ({ currentChannelId }) => {
@@ -38,17 +37,6 @@ class InputMessage extends React.Component {
     this.messageInput.current.focus();
   }
 
-  formControl = ({
-    input, onChange, inputRef, ...rest
-  }) => (
-    <FormControl
-      value={input.value}
-      onChange={input.onChange}
-      ref={inputRef}
-      {...rest}
-    />
-  );
-
   render() {
     const {
       submitting, pristine, handleSubmit, submitFailed,
@@ -64,7 +52,7 @@ class InputMessage extends React.Component {
                 required
                 disabled={submitting}
                 isInvalid={submitFailed}
-                component={this.formControl}
+                component={FormControlComponent}
                 type="text"
                 placeholder="message..."
                 autoComplete="off"
