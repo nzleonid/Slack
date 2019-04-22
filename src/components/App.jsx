@@ -1,7 +1,6 @@
 import React from 'react';
 import InputMessage from './InputMessage';
 import Messages from './Messages';
-import AlertError from './AlertError';
 import Channels from './Channels';
 import NewChannel from './NewChannel';
 import ModalDeleteChannel from './ModalDeleteChannel';
@@ -9,7 +8,6 @@ import ModalRenameChannel from './ModalRenameChannel';
 
 const App = () => (
   <div className="h-100">
-    <AlertError />
     <ModalDeleteChannel />
     <ModalRenameChannel />
     <div className="row">

@@ -1,9 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
+import {
+  Form, InputGroup, Button, FormControl,
+} from 'react-bootstrap';
 import _ from 'lodash';
 import * as actions from '../actions';
 import UsernameContext from '../UsernameContext';
+
 
 const mapStateToProps = ({ currentChannelId }) => {
   const props = {
@@ -15,6 +19,11 @@ const mapStateToProps = ({ currentChannelId }) => {
 @reduxForm({ form: 'InputMessage' })
 
 class InputMessage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.messageInput = React.createRef();
+  }
+
   sendMessage = username => async (value) => {
     const { reset, addMessageToServer, currentChannelId } = this.props;
     const data = {
@@ -26,33 +35,50 @@ class InputMessage extends React.Component {
     };
     await addMessageToServer(data, currentChannelId);
     reset();
+    this.messageInput.current.focus();
   }
+
+  formControl = ({
+    input, onChange, inputRef, ...rest
+  }) => (
+    <FormControl
+      value={input.value}
+      onChange={input.onChange}
+      ref={inputRef}
+      {...rest}
+    />
+  );
 
   render() {
     const {
-      submitting, pristine, handleSubmit,
+      submitting, pristine, handleSubmit, submitFailed,
     } = this.props;
     return (
       <UsernameContext.Consumer>
         {username => (
-          <form onSubmit={handleSubmit(this.sendMessage(username))}>
-            <div className="form-group">
-              <div className="input-group">
-                <Field
-                  name="text"
-                  className="form-control"
-                  required
-                  disabled={submitting}
-                  component="input"
-                  type="text"
-                  placeholder="message..."
-                />
-                <div className="input-group-append">
-                  <button type="submit" className="btn btn-dark" disabled={pristine || submitting}>Send</button>
-                </div>
-              </div>
-            </div>
-          </form>
+          <Form onSubmit={handleSubmit(this.sendMessage(username))}>
+            <InputGroup>
+              <Field
+                name="text"
+                className="form-control"
+                required
+                disabled={submitting}
+                isInvalid={submitFailed}
+                component={this.formControl}
+                type="text"
+                placeholder="message..."
+                autoComplete="off"
+                autoFocus
+                inputRef={this.messageInput}
+              />
+              <InputGroup.Append>
+                <Button type="submit" className="btn btn-dark" disabled={pristine || submitting}>Send</Button>
+              </InputGroup.Append>
+              <Form.Control.Feedback type="invalid">
+                Network error
+              </Form.Control.Feedback>
+            </InputGroup>
+          </Form>
         )}
       </UsernameContext.Consumer>
     );

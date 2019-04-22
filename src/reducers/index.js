@@ -4,26 +4,6 @@ import { reducer as formReducer } from 'redux-form';
 import _ from 'lodash';
 import * as actions from '../actions';
 
-const requestState = handleActions({
-  [actions.addMessageRequest]() {
-    return 'requested';
-  },
-  [actions.addMessageFailure]() {
-    return 'failed';
-  },
-  [actions.addMessageSuccess]() {
-    return 'finished';
-  },
-  [actions.channelEditingRequest]() {
-    return 'requested';
-  },
-  [actions.channelEditingFailure]() {
-    return 'failed';
-  },
-  [actions.channelEditingSuccess]() {
-    return 'finished';
-  },
-}, 'none');
 
 const messages = handleActions({
   [actions.addMessage](state, { payload: { attributes } }) {
@@ -38,7 +18,7 @@ const messages = handleActions({
     const currentMessage = _.omitBy(byId, (message => message.channelId === id));
     return {
       byId: currentMessage,
-      allIds: allIds.filter(messageId => Object.keys(currentMessage).includes(String(messageId))),
+      allIds: allIds.filter(messageId => _.has(currentMessage, String(messageId))),
     };
   },
 }, { byId: {}, allIds: [] });
@@ -83,7 +63,6 @@ const modal = handleActions({
 
 export default combineReducers({
   messages,
-  requestState,
   currentChannelId,
   channels,
   modal,
