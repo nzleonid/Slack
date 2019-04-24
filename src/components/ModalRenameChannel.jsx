@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { Button, Modal, Form } from 'react-bootstrap';
 import { reduxForm, Field } from 'redux-form';
 import * as actions from '../actions';
+import FormControlComponent from './FormControlComponent';
+
 
 const mapStateToProps = ({ modal }) => {
   const props = {
@@ -31,7 +33,9 @@ class ModalDeleteChannel extends React.Component {
   }
 
   render() {
-    const { modal, submitting, handleSubmit } = this.props;
+    const {
+      modal, submitting, pristine, handleSubmit, submitFailed,
+    } = this.props;
     return (
       <Modal show={modal.show === 'rename'} onHide={this.modalClose}>
         <Form onSubmit={handleSubmit(this.renameChannel)}>
@@ -40,12 +44,23 @@ class ModalDeleteChannel extends React.Component {
           </Modal.Header>
           <Modal.Body>
             Enter new channel name
-            <Field name="text" className="form-control" required disabled={submitting} component="input" type="text" placeholder="new name..." />
+            <Field
+              name="text"
+              className="form-control"
+              required
+              disabled={submitting}
+              isInvalid={submitFailed}
+              component={FormControlComponent}
+              type="text"
+              placeholder="channel name"
+              autoComplete="off"
+            />
+            <Form.Control.Feedback type="invalid">
+              Network error
+            </Form.Control.Feedback>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="dark" type="submit" disabled={submitting}>
-              Rename
-            </Button>
+            <Button type="submit" className="btn btn-dark" disabled={pristine || submitting}>Rename</Button>
           </Modal.Footer>
         </Form>
       </Modal>);

@@ -18,7 +18,7 @@ const messages = handleActions({
     const currentMessage = _.omitBy(byId, (message => message.channelId === id));
     return {
       byId: currentMessage,
-      allIds: allIds.filter(messageId => _.has(currentMessage, String(messageId))),
+      allIds: allIds.filter(messageId => currentMessage[messageId]),
     };
   },
 }, { byId: {}, allIds: [] });
